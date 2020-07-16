@@ -1,0 +1,117 @@
+# create deck
+# start game - take user name
+# hit enter to start
+# deal 2 cards that haven't been drawn before
+
+import random
+
+#variables
+x = 1
+totalpoints = 0
+usertotalpoints = 0
+comptotalpoints = 0
+
+#carddeck
+carddeck = {}
+carddeck["Card"] = ['Ace',2,3,4,5,6,7,8,9,'Jack','Queen','King']
+carddeck["Suit"] = ['Clubs','Diamonds','Hearts','Spades']
+
+#array for storing cards that have already been drawn
+dealt=[]
+
+def startgame():
+  username = input("Hi, welcome to our game of Black Jack or 21. What's your name?\n")
+  input("\nHi "+username+", hit enter to create a deck and deal 2 cards.")
+  userturn = True
+  #compturn = False
+  return userturn
+
+def generatecard():
+  cardindex = random.randint(0,9)
+  suitindex = random.randint(0,3)
+
+  card = carddeck["Card"][cardindex]
+  suit = carddeck["Suit"][suitindex]
+
+  check = str(card)+suit
+
+  newcard = 0
+  if check in dealt:
+    None
+  else:
+    dealt.append(check)
+    print("Card drawn: "+str(card)+" of "+str(suit)+".")
+    newcard = 1
+
+  if cardindex < 9:
+    cardscore = cardindex+1
+  else: cardscore = 10
+  
+  return newcard, cardscore
+
+def dealonce():
+  newcard, cardscore = generatecard()
+  return cardscore
+
+def dealagain(totalpoints):
+
+  #deal again is True.
+  goagain = 1
+
+  #check for Black Jack
+  if totalpoints == 21:
+    print("Black Jack!")
+
+    #do NOT deal again
+    goagain = 0
+
+  elif totalpoints > 21:
+    print("Bust!")
+    
+    # end round 
+    goagain = 2
+
+  elif totalpoints < 21:
+    None
+  
+  return goagain
+
+
+def continuegame(usertotalpoints):
+  print("\nDo you want to hit or stand? \n")
+  turnmove = input()
+  goagain = 1
+  
+  if turnmove.upper() == "HIT":
+    None
+  
+  elif turnmove.upper() == "STAND":
+    goagain = 3
+  else: 
+    print("Input not recognised please try again.")
+
+  return goagain
+
+
+userturn = startgame()
+usertotalpoints = 0
+
+while userturn and x < 3:
+  totalpoints = dealonce()
+  usertotalpoints += totalpoints
+  x = x+1
+
+print("You have",usertotalpoints,"points.")
+
+goagain = dealagain(usertotalpoints)
+
+while goagain == 1:
+  goagain = continuegame(usertotalpoints)
+  if goagain == 3: 
+    break
+  else:
+    totalpoints = dealonce()
+    usertotalpoints += totalpoints
+  print("You have",usertotalpoints,"points.")
+else: print("else")
+print("comp's turn")
